@@ -19,13 +19,13 @@ varpop() {
 		logit "variables previously populated, exiting"
 		exit 0
 	fi
-	find "./" -type f | while read -r file
+	find "./" -type f -not -path "./.git/*" | while read -r file
 	do
 		# Perform operations on each file
 		echo "Processing file: $file"
 		envsubst < ${file} > ${file}.tmp && mv ${file}.tmp ${file}
 		# Add your own commands here to process the file
-		# For example, you can perform actions like copying, renaming, or manipulating the file
+		# For example, you can perform actions like copying, renaming, or manipulati ng the file
 
 	done
 	logit "Variables replaced in all files in platform directory"
