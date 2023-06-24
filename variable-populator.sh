@@ -23,7 +23,7 @@ varpop() {
 	do
 		# Perform operations on each file
 		echo "Processing file: $file"
-		envsubst < ${file} > /tmp/${file} && mv /tmp/${file} ${file}
+		envsubst < ${file} > ${file}.tmp && mv ${file}.tmp ${file}
 		# Add your own commands here to process the file
 		# For example, you can perform actions like copying, renaming, or manipulating the file
 

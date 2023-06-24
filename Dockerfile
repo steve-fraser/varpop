@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM debian:stable-slim
 LABEL VERSION=0.0.7
 
 RUN apt-get update && apt-get -y --no-install-recommends install gettext-base curl git ca-certificates && apt-get -y clean
