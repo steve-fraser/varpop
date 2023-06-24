@@ -11,26 +11,28 @@ logit() {
 # Populate platform manifests with environment variables
 varpop() {
 	cd /tmp
-	git clone https://${GITHUB_TOKEN}@github.com/weavegitops/${CLUSTER_NAME}.git
+	git clone https://${GITHUB_TOKEN}@github.com/${GITHUB_ORG}/${CLUSTER_NAME}.git
 	logit "WGE repo cloned, check deployment status"
 	cd ${CLUSTER_NAME}
-	if [ -f platform/.done ]
+	if [ -f .done ]
 	then
 		logit "variables previously populated, exiting"
 		exit 0
 	fi
-	cp -R bin/platform/* platform
-	logit "Platform directory copied"
-	for file in $(ls platform/)
+	find "./" -type f | while read -r file
 	do
-		envsubst < platform/${file} > /tmp/${file} && mv /tmp/${file} platform/${file}
-		logit "Variables replaced in ${file}"
+		# Perform operations on each file
+		echo "Processing file: $file"
+		envsubst < ${file} > /tmp/${file} && mv /tmp/${file} ${file}
+		# Add your own commands here to process the file
+		# For example, you can perform actions like copying, renaming, or manipulating the file
+
 	done
 	logit "Variables replaced in all files in platform directory"
-	touch platform/.done
+	touch .done
 	git config user.name github-actions
 	git config user.email github-actions@github.com
-	git add platform/.
+	git add .
 	git commit -m 'Cluster variables populated'
 	git push
 	logit "Updated files pushed to git"
